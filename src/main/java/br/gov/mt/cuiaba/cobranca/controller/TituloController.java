@@ -1,5 +1,8 @@
 package br.gov.mt.cuiaba.cobranca.controller;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,6 +36,9 @@ public class TituloController {
 		return mv;
 	}
 	
-	@ModelAttribute
-	public List<s>
+	@ModelAttribute("todosStatusTitulo")
+	public List<StatusTitulo> todosStatusTitulo(){
+		return Arrays.asList(StatusTitulo.values());
+	}
+	
 }
