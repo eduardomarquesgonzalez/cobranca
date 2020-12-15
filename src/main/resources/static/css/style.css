@@ -1,9 +1,18 @@
+.navbar-brand {
+	padding-top: 12px;
+}
 
-.form-horizontal{
+.panel-default {
+	margin-left: 10x;
+	margin-right: 10px;
+}
+
+.alert {
 	margin-left: 10px;
 	margin-right: 10px;
 }
-.panel-default{
-	margin-left: 10px;
-	margin-right: 10px;
+
+.panel-title{
+	margin-left: 12px;
+	margin-right: 12px;
 }
