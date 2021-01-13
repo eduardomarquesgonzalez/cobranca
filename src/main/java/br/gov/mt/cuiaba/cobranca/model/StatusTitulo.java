@@ -2,8 +2,7 @@ package br.gov.mt.cuiaba.cobranca.model;
 
 public enum StatusTitulo {
 	PENDENTE("pendente"),
-	RECEBIDO("recebido"),
-	CANCELADO("cancelado");
+	RECEBIDO("recebido");
 
 	private String descricao;
 	StatusTitulo(String descricao){
