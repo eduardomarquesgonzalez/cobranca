@@ -22,14 +22,14 @@ import br.gov.mt.cuiaba.cobranca.repository.Titulos;
 @RequestMapping("/titulos")
 public class TituloController {
 	
-	private final String CADASTRO_VIEW = "CadastroTitulo";
+	private static final String CADASTRO_VIEW = "CadastroTitulo";
 	
 	@Autowired
 	private Titulos titulos;
 	
 	@RequestMapping("/novo")
 	public ModelAndView novo() {
-		ModelAndView mv = new ModelAndView("CADASTRO_VIEW");
+		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
 		mv.addObject(new Titulo());
 		return mv;
 	}
