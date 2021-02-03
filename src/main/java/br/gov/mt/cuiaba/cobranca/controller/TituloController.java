@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -12,12 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.gov.mt.cuiaba.cobranca.model.StatusTitulo;
 import br.gov.mt.cuiaba.cobranca.model.Titulo;
 import br.gov.mt.cuiaba.cobranca.repository.Titulos;
+import br.gov.mt.cuiaba.cobranca.repository.filter.TituloFilter;
 import br.gov.mt.cuiaba.cobranca.service.CadastroTituloService;
 
 @Controller
@@ -31,6 +32,8 @@ public class TituloController {
 	
 	@Autowired
 	private CadastroTituloService cadastroTituloService;
+
+	private TituloFilter filtro;
 	
 	@RequestMapping("/novo")
 	public ModelAndView novo() {
@@ -57,12 +60,14 @@ public class TituloController {
 	}
 	
 	@RequestMapping
-	public ModelAndView pesquisar() {
-		List<Titulo> todosTitulos = titulos.findAll();
+	public ModelAndView pesquisar(@ModelAttribute("filtro") TituloFilter filtro) {
+		List<Titulo> todosTitulos = cadastroTituloService.filtrar(filtro);
+		
 		ModelAndView mv = new ModelAndView("PesquisaTitulos");
 		mv.addObject("titulos", todosTitulos);
 		return mv;
 	}
+	
 	
 	
 	@RequestMapping("{codigo}")
@@ -81,6 +86,14 @@ public class TituloController {
 		attributes.addFlashAttribute("mensagem", "Título excluído com sucesso!");
 		return "redirect:/titulos";
 	}
+	
+	
+	@RequestMapping(value= "/{codigo}/receber", method= RequestMethod.PUT)
+	public @ResponseBody String receber(@PathVariable Long codigo) {
+		 return cadastroTituloService.receber(codigo);
+		
+	}
+
 
 	@ModelAttribute("todosStatusTitulo")
 	public List<StatusTitulo> todosStatusTitulo(){
