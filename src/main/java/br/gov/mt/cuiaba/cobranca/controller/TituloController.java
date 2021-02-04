@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.gov.mt.cuiaba.cobranca.model.StatusTitulo;
 import br.gov.mt.cuiaba.cobranca.model.Titulo;
-import br.gov.mt.cuiaba.cobranca.repository.Titulos;
 import br.gov.mt.cuiaba.cobranca.repository.filter.TituloFilter;
 import br.gov.mt.cuiaba.cobranca.service.CadastroTituloService;
 
@@ -28,13 +27,8 @@ public class TituloController {
 	private static final String CADASTRO_VIEW = "CadastroTitulo";
 	
 	@Autowired
-	private Titulos titulos;
-	
-	@Autowired
 	private CadastroTituloService cadastroTituloService;
 
-	private TituloFilter filtro;
-	
 	@RequestMapping("/novo")
 	public ModelAndView novo() {
 		ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
@@ -44,19 +38,18 @@ public class TituloController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public String salvar(@Validated Titulo titulo, Errors errors, RedirectAttributes attributes) {
-		if(errors.hasErrors()) {
-			return "CADASTRO_VIEW";
+		if (errors.hasErrors()) {
+			return CADASTRO_VIEW;
 		}
 		
 		try {
-		cadastroTituloService.salvar(titulo);
-		attributes.addFlashAttribute("mensagem","Titulo salvo com sucesso");
-		return "redirect:/titulos/novo";
-	}catch (IllegalArgumentException e) {
-		errors.rejectValue("dataVencimento", null, e.getMessage());
-		return CADASTRO_VIEW;
-	}
-		
+			cadastroTituloService.salvar(titulo);
+			attributes.addFlashAttribute("mensagem", "Título salvo com sucesso!");
+			return "redirect:/titulos/novo";
+		} catch (IllegalArgumentException e) {
+			errors.rejectValue("dataVencimento", null, e.getMessage());
+			return CADASTRO_VIEW;
+		}
 	}
 	
 	@RequestMapping
@@ -68,12 +61,8 @@ public class TituloController {
 		return mv;
 	}
 	
-	
-	
 	@RequestMapping("{codigo}")
-	public ModelAndView edicao(@PathVariable("codigo") Long codigoTitulo) {
-		Titulo titulo = titulos.getOne(codigoTitulo);
-		
+	public ModelAndView edicao(@PathVariable("codigo") Titulo titulo) {
 		ModelAndView mv = new ModelAndView(CADASTRO_VIEW); 
 		mv.addObject(titulo);
 		return mv;
@@ -81,23 +70,21 @@ public class TituloController {
 	
 	@RequestMapping(value="{codigo}", method = RequestMethod.DELETE)
 	public String excluir(@PathVariable Long codigo, RedirectAttributes attributes) {
-		
 		cadastroTituloService.excluir(codigo);
+		
 		attributes.addFlashAttribute("mensagem", "Título excluído com sucesso!");
 		return "redirect:/titulos";
 	}
 	
-	
-	@RequestMapping(value= "/{codigo}/receber", method= RequestMethod.PUT)
+	@RequestMapping(value = "/{codigo}/receber", method = RequestMethod.PUT)
 	public @ResponseBody String receber(@PathVariable Long codigo) {
-		 return cadastroTituloService.receber(codigo);
-		
+		return cadastroTituloService.receber(codigo);
 	}
-
-
+	
 	@ModelAttribute("todosStatusTitulo")
-	public List<StatusTitulo> todosStatusTitulo(){
+	public List<StatusTitulo> todosStatusTitulo() {
 		return Arrays.asList(StatusTitulo.values());
 	}
 	
 }
+

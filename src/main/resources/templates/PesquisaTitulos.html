@@ -12,7 +12,7 @@
 		<div class="panel-heading">
 			<div class="clearfix">
 	   			<h1 class="panel-title aw-titulo-panel">Pesquisa de títulos</h1>
-	   			<a class="btn btn-link aw-link-panel" href="/titulos/novo"
+	   			<a class="btn btn-link aw-link-panel" th:href="@{/titulos/novo}"
 	   			title="Criar novo" rel="tooltip" data-placement="top">Novo título</a>
 	   		</div>
 	   	</div>
@@ -32,6 +32,7 @@
 	   				</div>
 	   			</div>
 	   		</form>
+	   	<div class="table-responsive">
 	   		<table class="table table-bordered table-striped">
 	   			<thead>
 	   				<tr>
@@ -76,8 +77,9 @@
 	   				</tr>
 	   			</tbody>
 	   		</table>
+	   		</div>
 	   	</div>
-	   	<div th:replace="DialogoConfirmacaoExclusao"></div>
-	</div>
+	   </div>
+	<div th:replace="DialogoConfirmacaoExclusao"></div>
 </section>
 </html>
